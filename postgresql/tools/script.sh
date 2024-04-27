@@ -21,7 +21,8 @@ su -c "pg_ctl start -D /var/lib/postgresql/data" -s /bin/sh postgres
 su -c "psql -d postgres -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';\"" -s /bin/sh postgres
 
 su -c "psql -d postgres -c \"CREATE DATABASE ${DB_NAME} OWNER ${DB_USER};\"" -s /bin/sh postgres
+su -c "psql -d postgres -c \"CREATE DATABASE test_db OWNER ${DB_USER};\"" -s /bin/sh postgres
 
 su -c "pg_ctl stop -D /var/lib/postgresql/data" -s /bin/sh postgres
 
-su -c "exec postgres -D /var/lib/postgresql/data" -s /bin/sh postgres
+exec su -c "postgres -D /var/lib/postgresql/data" -s /bin/sh postgres
