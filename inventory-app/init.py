@@ -1,46 +1,55 @@
-DB_USER='amine'
-DB_PASSWD='passwd'
-DB_HOST='127.0.0.1'
-DB_PORT='5432'
-DB='movies_db'
-
-from sqlalchemy import text, create_engine
+from sqlalchemy import insert, delete, update, select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
+import movie
 
-# from sqlalchemy.orm import DeclarativeBase
-# class Base(DeclarativeBase):
-#     pass
+Session = sessionmaker(movie.engine)
 
-
-
-engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB}", echo=True)
-
-Session = sessionmaker(engine)
 
 def add_movie(title, description):
     sess = Session()
-    sess.execute(text(f"INSERT INTO table1 (title, description) VALUES(:title, :description)"), {"title": title, "description": description})
+    sess.execute(insert(movie.movie).values(title=title, description=description))
     sess.commit()
+    sess.close()
 
-def delete_movies(id=None):
+def select_movie(id=None, title=None):
     sess = Session()
-    if id is None:
-        sess.execute(text("DELETE FROM table1"))
+    if id is None and title is None:
+        results = sess.execute(select(movie.movie)).fetchall()
+    elif title is None:
+        results = sess.execute(select(movie.movie).where(movie.movie.id == id)).fetchall()
     else:
-        sess.execute(text("DELETE FROM table1 WHERE id=:id"), {"id": id})
-    sess.commit()
+        results = sess.execute(select(movie.movie).where(movie.movie.title == title)).fetchall()
+    sess.close()
+    movies_list = []
+    if results:
+        for result in results:
+            movies_list.append({'id': result[0].id, 'title': result[0].title, 'description': result[0].description})
+        return movies_list
+    else:
+        return {'message': 'Movie not found'}
 
 def update_movie(id, title=None, description=None):
     sess = Session()
     if title is None and description is None:
         return
     elif description is None:
-        sess.execute(text("UPDATE table1 SET title=:title WHERE id=:id"), {"title": title, "id": id})
+        sess.execute(update(movie.movie).where(movie.movie.id == id).values(title=title))
     elif title is None:
-        sess.execute(text("UPDATE table1 SET description=:description WHERE id=:id"), {"description": description, "id": id})
+        sess.execute(update(movie.movie).where(movie.movie.id == id).values(description=description))
     else:
-        sess.execute(text("UPDATE table1 SET title=:title, description=:description WHERE id=:id"), {"title": title, "description": description, "id": id})
+        sess.execute(update(movie.movie).where(movie.movie.id == id).values(title=title, description=description))
     sess.commit()
+    sess.close()
 
+def delete_movies(id=None):
+    sess = Session()
+    if id is None:
+        sess.execute(delete(movie.movie))
+    else:
+        sess.execute(delete(movie.movie).where(movie.movie.id == id))
+    sess.commit()
+    sess.close()
 
+# for i in range(10):
+#     add_movie(f"movie{i}", f"desc{i * i}")
