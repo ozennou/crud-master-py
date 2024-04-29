@@ -1,0 +1,46 @@
+services:
+  inventory-db:
+    build: ./postgresql/
+    image: "postgresql:stable"
+    container_name: inventory-db
+    volumes:
+      - inventory-mount:/var/lib/postgresql/data
+    user: "postgres:postgres"
+    #remove ports later
+    ports:
+      - 5432:5432
+    environment:
+      - "DB_USER=$INVEN_DB_USER"
+      - "DB_PASSWORD=$INVEN_DB_PASSWORD"
+      - "DB_NAME=$INVEN_DB_NAME"
+    restart: unless-stopped
+  # billing-db:
+  #   build: ./postgresql/
+  #   image: "postgresql:stable"
+  #   container_name: billing-db
+  #   volumes:
+  #     - billing-mount:/var/lib/postgresql/data
+  #   user: "postgres:postgres"
+  #   #remove ports later
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - "DB_USER=$BILLING_DB_USER"
+  #     - "DB_PASSWORD=$BILLING_DB_PASSWORD"
+  #     - "DB_NAME=$BILLING_DB_NAME"
+
+
+
+volumes:
+  inventory-mount:
+    name: inventory-mount
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mozennou/test
+  # billing-mount:
+  #   name: billing-mount
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /home/mozennou/test

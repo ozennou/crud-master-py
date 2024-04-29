@@ -4,7 +4,6 @@ RUN apk update
 
 RUN apk add --no-cache postgresql postgresql-contrib
 
-#that's for postgre socket
 RUN mkdir /run/postgresql
 
 RUN chown postgres:postgres /run/postgresql

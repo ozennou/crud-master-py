@@ -50,6 +50,3 @@ def delete_movies(id=None):
         sess.execute(delete(movie.movie).where(movie.movie.id == id))
     sess.commit()
     sess.close()
-
-# for i in range(10):
-#     add_movie(f"movie{i}", f"desc{i * i}")
