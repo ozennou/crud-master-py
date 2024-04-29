@@ -25,9 +25,9 @@ def select_movie(id=None, title=None):
     if results:
         for result in results:
             movies_list.append({'id': result[0].id, 'title': result[0].title, 'description': result[0].description})
-        return movies_list
+        return movies_list, 200
     else:
-        return {'message': 'Movie not found'}
+        return {'message': 'Movie not found'}, 400
 
 def update_movie(id, title=None, description=None):
     sess = Session()
@@ -44,9 +44,14 @@ def update_movie(id, title=None, description=None):
 
 def delete_movies(id=None):
     sess = Session()
+    exit = True
     if id is None:
         sess.execute(delete(movie.movie))
     else:
-        sess.execute(delete(movie.movie).where(movie.movie.id == id))
+        if select_movie(id)[1] == 200:
+            sess.execute(delete(movie.movie).where(movie.movie.id == id))
+        else:
+            exit = False
     sess.commit()
     sess.close()
+    return exit

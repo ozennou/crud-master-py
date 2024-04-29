@@ -6,14 +6,28 @@ services:
     volumes:
       - inventory-mount:/var/lib/postgresql/data
     user: "postgres:postgres"
-    #remove ports later
-    ports:
-      - 5432:5432
+    networks: 
+      - crud_net
     environment:
       - "DB_USER=$INVEN_DB_USER"
       - "DB_PASSWORD=$INVEN_DB_PASSWORD"
       - "DB_NAME=$INVEN_DB_NAME"
     restart: unless-stopped
+  inventory-app:
+    build: ./inventory-app/
+    image: "inventory-app:stable"
+    container_name: inventory-app
+    networks: 
+      - crud_net
+    ports:
+      - 3000:3000
+    environment:
+      - "DB_USER=$INVEN_DB_USER"
+      - "DB_PASSWORD=$INVEN_DB_PASSWORD"
+      - "DB_NAME=$INVEN_DB_NAME"
+    restart: unless-stopped
+    depends_on:
+      - inventory-db
   # billing-db:
   #   build: ./postgresql/
   #   image: "postgresql:stable"
@@ -30,6 +44,10 @@ services:
   #     - "DB_NAME=$BILLING_DB_NAME"
 
 
+networks:
+  crud_net:
+    name: crud_net
+    driver: bridge
 
 volumes:
   inventory-mount:

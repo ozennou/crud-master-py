@@ -1,6 +1,6 @@
 DB_USER='amine'
 DB_PASSWD='passwd'
-DB_HOST='127.0.0.1'
+DB_HOST='inventory-db'
 DB_PORT='5432'
 DB='movies_db'
 
@@ -20,7 +20,7 @@ class movie(Base):
     def __init__(self, title, description):
         self.title = title
         self.description = description
-    def test(self) -> str:
-        return f"Movie (id: {self.id}, title{self.title})"
+    # def test(self) -> str:
+    #     return f"Movie (id: {self.id}, title{self.title})"
 
 Base.metadata.create_all(engine)
