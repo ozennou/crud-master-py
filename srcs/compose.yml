@@ -23,8 +23,9 @@ services:
       - 3000:3000
     environment:
       - "DB_USER=$INVEN_DB_USER"
-      - "DB_PASSWORD=$INVEN_DB_PASSWORD"
+      - "DB_PASSWD=$INVEN_DB_PASSWORD"
       - "DB_NAME=$INVEN_DB_NAME"
+      - "DB_HOST=$INVEN_DB_HOST"
     restart: unless-stopped
     depends_on:
       - inventory-db
