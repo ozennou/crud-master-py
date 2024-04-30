@@ -29,6 +29,21 @@ services:
     restart: unless-stopped
     depends_on:
       - inventory-db
+  rabbitmq:
+    build: ./rabbitmq/
+    image: "rabbitmq:stable"
+    container_name: rabbitmq
+    networks: 
+      - crud_net
+    ports:
+      - 5672:5672 
+      - 15672:15672 
+    environment:
+      - "RABBITMQ_USER=$RABBITMQ_USER"
+      - "RABBITMQ_PASSWD=$RABBITMQ_PASSWD"
+      - "RABBIT_EXCHANGE=$RABBIT_EXCHANGE"
+      - "RABBIT_QUEUE=$RABBIT_QUEUE"
+    restart: unless-stopped
   # billing-db:
   #   build: ./postgresql/
   #   image: "postgresql:stable"
