@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.18 as base
 
 RUN apk update
 

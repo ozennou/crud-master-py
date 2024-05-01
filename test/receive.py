@@ -1,12 +1,13 @@
 import pika
-import db
-
+import time
 def main():
-    connect = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', credentials=pika.PlainCredentials('amine', 'passwd'))) #replace the user and passwd
+    connect = pika.BlockingConnection(pika.ConnectionParameters('127.0.0.1', credentials=pika.PlainCredentials('amine', 'passwd')))
     channel = connect.channel()
 
     def callback(ch, method, proprities, body):
-        db.process_order(body)
+        print(f"message body: {body}")
+        #do the work
+        time.sleep(1)
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

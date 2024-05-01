@@ -20,7 +20,7 @@ services:
     networks: 
       - crud_net
     ports:
-      - 3000:3000
+      - 8080:8080
     environment:
       - "DB_USER=$INVEN_DB_USER"
       - "DB_PASSWD=$INVEN_DB_PASSWORD"
@@ -44,20 +44,38 @@ services:
       - "RABBIT_EXCHANGE=$RABBIT_EXCHANGE"
       - "RABBIT_QUEUE=$RABBIT_QUEUE"
     restart: unless-stopped
-  # billing-db:
-  #   build: ./postgresql/
-  #   image: "postgresql:stable"
-  #   container_name: billing-db
-  #   volumes:
-  #     - billing-mount:/var/lib/postgresql/data
-  #   user: "postgres:postgres"
-  #   #remove ports later
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - "DB_USER=$BILLING_DB_USER"
-  #     - "DB_PASSWORD=$BILLING_DB_PASSWORD"
-  #     - "DB_NAME=$BILLING_DB_NAME"
+  billing-db:
+    build: ./postgresql/
+    image: "postgresql:stable"
+    container_name: billing-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - billing-mount:/var/lib/postgresql/data
+    user: "postgres:postgres"
+    networks: 
+      - crud_net
+    environment:
+      - "DB_USER=$BILLING_DB_USER"
+      - "DB_PASSWORD=$BILLING_DB_PASSWORD"
+      - "DB_NAME=$BILLING_DB_NAME"
+    restart: unless-stopped
+  billing-app:
+    build: ./billing-app/
+    image: "billing-app:stable"
+    container_name: billing-app
+    user: "postgres:postgres"
+    networks: 
+      - crud_net
+    environment:
+      - "DB_USER=$BILLING_DB_USER"
+      - "DB_PASSWD=$BILLING_DB_PASSWORD"
+      - "DB_NAME=$BILLING_DB_NAME"
+      - "DB_HOST=$BILLING_DB_HOST"
+    restart: unless-stopped
+    depends_on:
+      - billing-db
+      - rabbitmq
 
 
 networks:
@@ -71,7 +89,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mozennou/test
+      device: /home/mozennou/inventory
+  billing-mount:
+    name: billing-mount
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mozennou/billing
   # billing-mount:
   #   name: billing-mount
   #   driver_opts:

@@ -18,9 +18,9 @@ def select_movie(id=None, title=None):
     if id is None and title is None:
         results = sess.execute(select(movies.movie)).fetchall()
     elif title is None:
-        results = sess.execute(select(movies.movie).where(movies.movies.id == id)).fetchall()
+        results = sess.execute(select(movies.movie).where(movies.movie.id == id)).fetchall()
     else:
-        results = sess.execute(select(movies.movie).where(movies.movies.title == title)).fetchall()
+        results = sess.execute(select(movies.movie).where(movies.movie.title == title)).fetchall()
     sess.close()
     movies_list = []
     if results:
@@ -35,11 +35,11 @@ def update_movie(id, title=None, description=None):
     if title is None and description is None:
         return
     elif description is None:
-        sess.execute(update(movies.movie).where(movies.movies.id == id).values(title=title))
+        sess.execute(update(movies.movie).where(movies.movie.id == id).values(title=title))
     elif title is None:
-        sess.execute(update(movies.movie).where(movies.movies.id == id).values(description=description))
+        sess.execute(update(movies.movie).where(movies.movie.id == id).values(description=description))
     else:
-        sess.execute(update(movies.movie).where(movies.movies.id == id).values(title=title, description=description))
+        sess.execute(update(movies.movie).where(movies.movie.id == id).values(title=title, description=description))
     sess.commit()
     sess.close()
 
@@ -50,7 +50,7 @@ def delete_movies(id=None):
         sess.execute(delete(movies.movie))
     else:
         if select_movie(id)[1] == 200:
-            sess.execute(delete(movies.movie).where(movies.movies.id == id))
+            sess.execute(delete(movies.movie).where(movies.movie.id == id))
         else:
             exit = False
     sess.commit()

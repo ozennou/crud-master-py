@@ -4,8 +4,6 @@ if [ -f /var/lib/postgresql/data/PG_VERSION ];then
     exec postgres -D /var/lib/postgresql/data
 fi
 
-mkdir /var/lib/postgresql/data
-
 chmod 0700 /var/lib/postgresql
 
 initdb -D /var/lib/postgresql/data

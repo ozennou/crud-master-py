@@ -1,12 +1,13 @@
-from sqlalchemy import Integer, String, create_engine
+from sqlalchemy import Integer, create_engine
 from sqlalchemy.orm import DeclarativeBase, mapped_column
 import os
 
-DB_USER='amine'
-DB_PASSWD='passwd'
-DB_HOST='127.0.0.1'
-DB='orders_db'
+DB_USER=os.getenv('DB_USER')
+DB_PASSWD=os.getenv('DB_PASSWD')
+DB_HOST=os.getenv('DB_HOST')
+DB=os.getenv('DB_NAME')
 DB_PORT=5432
+
 
 engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB}")
 
