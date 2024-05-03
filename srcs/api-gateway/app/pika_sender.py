@@ -1,7 +1,6 @@
 import pika
 import json
 
-
 MQ_HOST = '127.0.0.1'
 MQ_USER = 'amine'
 MQ_PASSWD = 'passwd'
