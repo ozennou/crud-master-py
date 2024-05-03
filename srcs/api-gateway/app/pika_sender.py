@@ -1,11 +1,11 @@
 import pika
 import json
+import os
 
-MQ_HOST = '127.0.0.1'
-MQ_USER = 'amine'
-MQ_PASSWD = 'passwd'
-RABBIT_EXCHANGE = 'Eorders'
-RABBIT_QUEUE = 'Qorders'
+MQ_HOST = os.getenv('RABBIT_HOST')
+MQ_USER = os.getenv('RABBITMQ_USER')
+MQ_PASSWD = os.getenv('RABBITMQ_PASSWD')
+RABBIT_EXCHANGE = os.getenv('RABBIT_EXCHANGE')
 
 def mq_sneder(data):
     params = pika.ConnectionParameters(MQ_HOST, credentials=pika.PlainCredentials(MQ_USER, MQ_PASSWD))

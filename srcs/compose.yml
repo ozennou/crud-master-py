@@ -19,8 +19,6 @@ services:
     container_name: inventory-app
     networks: 
       - crud_net
-    ports:
-      - 8080:8080
     environment:
       - "DB_USER=$INVEN_DB_USER"
       - "DB_PASSWD=$INVEN_DB_PASSWORD"
@@ -35,9 +33,8 @@ services:
     container_name: rabbitmq
     networks: 
       - crud_net
-    ports:
-      - 5672:5672 
-      - 15672:15672 
+    # ports:
+    #   - 15672:15672 #
     environment:
       - "RABBITMQ_USER=$RABBITMQ_USER"
       - "RABBITMQ_PASSWD=$RABBITMQ_PASSWD"
@@ -48,8 +45,6 @@ services:
     build: ./postgresql/
     image: "postgresql:stable"
     container_name: billing-db
-    ports:
-      - "5432:5432"
     volumes:
       - billing-mount:/var/lib/postgresql/data
     user: "postgres:postgres"
@@ -64,18 +59,28 @@ services:
     build: ./billing-app/
     image: "billing-app:stable"
     container_name: billing-app
-    user: "postgres:postgres"
     networks: 
       - crud_net
-    environment:
-      - "DB_USER=$BILLING_DB_USER"
-      - "DB_PASSWD=$BILLING_DB_PASSWORD"
-      - "DB_NAME=$BILLING_DB_NAME"
-      - "DB_HOST=$BILLING_DB_HOST"
+    env_file:
+      - .env
     restart: unless-stopped
     depends_on:
       - billing-db
       - rabbitmq
+  api-gateway:
+    build: ./api-gateway/
+    image: "api-gateway:stable"
+    container_name: api-gateway
+    ports:
+      - "80:80"
+    networks: 
+      - crud_net
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - inventory-app
 
 
 networks:
@@ -96,9 +101,3 @@ volumes:
       type: none
       o: bind
       device: /home/mozennou/billing
-  # billing-mount:
-  #   name: billing-mount
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /home/mozennou/test

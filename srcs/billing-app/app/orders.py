@@ -2,10 +2,10 @@ from sqlalchemy import Integer, create_engine
 from sqlalchemy.orm import DeclarativeBase, mapped_column
 import os
 
-DB_USER=os.getenv('DB_USER')
-DB_PASSWD=os.getenv('DB_PASSWD')
-DB_HOST=os.getenv('DB_HOST')
-DB=os.getenv('DB_NAME')
+DB_USER=os.getenv('BILLING_DB_USER')
+DB_PASSWD=os.getenv('BILLING_DB_PASSWORD')
+DB_HOST=os.getenv('BILLING_DB_HOST')
+DB=os.getenv('BILLING_DB_NAME')
 DB_PORT=5432
 
 

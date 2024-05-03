@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify
 import requests
+import os
 import pika_sender as send
 bp = Blueprint('gateway', __name__)
+
+INVEN_APP_HOST = os.getenv('INVEN_APP_HOST')
+INVENTORY_PORT = os.getenv('INVEN_APP_PORT')
 
 @bp.route('/api/billing', methods=['POST'])
 def post_billing():
@@ -13,11 +17,13 @@ def post_billing():
 
 @bp.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 def movies_api(path):
-    service_mapping = { "movies": "http://127.0.0.1:8080" }
+    parts = path.split('/')
+    if parts[0] != 'api' or parts[1] != 'movies':
+        return jsonify({'message': 'service not found'}), 404
     try:
         response = requests.request(
             method=request.method,
-            url=f"http://127.0.0.1:8080/{path}",
+            url=f"http://{INVEN_APP_HOST}:{INVENTORY_PORT}/{path}",
             headers=request.headers,
             data=request.get_data(),
             params=request.args

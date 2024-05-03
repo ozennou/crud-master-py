@@ -8,6 +8,4 @@ COPY ./app ./app
 
 RUN pip install --no-cache-dir -r ./app/Requirements.txt
 
-RUN chmod +x ./app/script.sh
-
-ENTRYPOINT [ "./app/script.sh" ]
+ENTRYPOINT [ "python3", "./app/app.py" ]
