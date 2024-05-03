@@ -12,5 +12,4 @@ channel.basic_publish(exchange='Eorders',
                       body=message)
 
 
-
 connect.close()

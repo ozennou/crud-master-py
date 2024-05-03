@@ -9,5 +9,10 @@ while ! nc -zv rabbitmq 5672; do
     echo "Waiting RabbitMQ..."
     sleep 2
 done
+sleep 5
+while ! nc -zv rabbitmq 5672; do  # i do that cause i start and stop to configure rabbitmq.
+    echo "Waiting RabbitMQ..."
+    sleep 2
+done
 
 exec python3 ./app/app.py
