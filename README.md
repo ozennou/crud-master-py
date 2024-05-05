@@ -18,7 +18,7 @@ CRUD Master serves as an educational project aimed at mastering various technolo
 - PostgeSQL
 - HTTP requests methods
 
-The project subject is provided by 01-edu [Subject](https://github.com/01-edu/public/tree/master/subjects/devops/crud-master-py), but it use multiple VMs using vagrant but here i simply use docker containers for portability, lightweight, scalabilty and containerized deployments, All the containers build in alpine:3.18 image.
+The project subject is provided by 01-edu [Subject](https://github.com/01-edu/public/tree/master/subjects/devops/crud-master-py), but it use multiple VMs using vagrant but here i simply use docker containers for portability, lightweight, scalabilty and containerized deployments, All the containers build in the minimal alpine:3.18 base image.
 
 #### SQLAlchemy 
 
