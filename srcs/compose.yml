@@ -34,7 +34,7 @@ services:
     networks: 
       - crud_net
     # ports:
-    #   - 15672:15672 #
+    #   - 15672:15672 # to use RabbitMQ UI 
     environment:
       - "RABBITMQ_USER=$RABBITMQ_USER"
       - "RABBITMQ_PASSWD=$RABBITMQ_PASSWD"
