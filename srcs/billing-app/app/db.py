@@ -15,7 +15,13 @@ def add_order(user_id, number_of_items, total_amount):
 def process_order(body):
     data = json.loads(body)
     if 'user_id' in data and 'number_of_items' in data and 'total_amount' in data:
-        add_order(data['user_id'], data['number_of_items'], data['total_amount'])
-        print("-------Order added successfully----------")
+        try:
+            uid = int(data['user_id'])
+            number_of_items = int(data['number_of_items'])
+            total_amount = int(data['total_amount'])
+            print("-------Order added successfully----------")
+            add_order(uid, number_of_items, total_amount)
+        except ValueError as e:
+            print("-------Adding order failed----------")
     else:
         print("-------Adding order failed----------")

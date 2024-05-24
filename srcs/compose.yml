@@ -94,10 +94,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mozennou/inventory
+      device: /home/mozennou/data/inventory
   billing-mount:
     name: billing-mount
     driver_opts:
       type: none
       o: bind
-      device: /home/mozennou/billing
+      device: /home/mozennou/data/billing
