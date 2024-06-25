@@ -13,7 +13,7 @@ def post_billing():
         return jsonify({'message': 'body is not json'}), 400
     data = request.get_json()
     send.mq_sneder(data)
-    return jsonify({'message': 'body received seccessfully'}), 200
+    return jsonify({'message': 'body received successfully'}), 200
 
 @bp.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 def movies_api(path):
