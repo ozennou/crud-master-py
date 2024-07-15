@@ -13,3 +13,4 @@ def mq_sneder(data):
     channel = connect.channel()
     channel.basic_publish(exchange=RABBIT_EXCHANGE, routing_key='order', body=json.dumps(data))
     connect.close()
+

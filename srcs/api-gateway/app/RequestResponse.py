@@ -12,7 +12,10 @@ def post_billing():
     if not request.is_json:
         return jsonify({'message': 'body is not json'}), 400
     data = request.get_json()
-    send.mq_sneder(data)
+    try:
+        send.mq_sneder(data)
+    except:
+        return jsonify({'message': 'billing service not available'}), 404
     return jsonify({'message': 'body received successfully'}), 200
 
 @bp.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'DELETE'])
