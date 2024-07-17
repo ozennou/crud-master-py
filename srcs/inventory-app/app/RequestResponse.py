@@ -3,6 +3,10 @@ import db
 
 bp = Blueprint('movies', __name__)
 
+@bp.route('/healthy', methods=['GET'])
+def health_check():
+    return jsonify({'health-check': 'green'}), 200
+
 @bp.route('/api/movies/', defaults={'id': None}, methods=['GET'])
 @bp.route('/api/movies/<int:id>', methods=['GET'])
 def get_movies(id):

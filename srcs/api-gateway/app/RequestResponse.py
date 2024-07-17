@@ -7,6 +7,10 @@ bp = Blueprint('gateway', __name__)
 INVEN_APP_HOST = os.getenv('INVEN_APP_HOST')
 INVENTORY_PORT = os.getenv('INVEN_APP_PORT')
 
+@bp.route('/healthy', methods=['GET'])
+def health_check():
+    return jsonify({'health-check': 'green'}), 200
+
 @bp.route('/api/billing', methods=['POST'])
 def post_billing():
     if not request.is_json:
