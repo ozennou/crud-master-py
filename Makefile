@@ -17,3 +17,4 @@ up_build: set_up
 
 fclean:
 	docker compose -f ./srcs/compose.yml down
+ 
